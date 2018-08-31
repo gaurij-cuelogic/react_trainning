@@ -3,67 +3,85 @@ import './App.css';
 import Person from './Person/Person.js';
 
 class App extends Component {
-   state = {
-      persons : [
-        {name : "gauri", age:21},
-        {name : "abc", age:25},
-        {name : "xyz", age:20}
-      ],
-      otherState : "otherstate"
+  state = {
+    persons: [
+      { id: "1a", name: "gauri", age: 21 },
+      { id: "1b", name: "abc", age: 25 },
+      { id: "1c", name: "xyz", age: 20 }
+    ],
+    otherState: "otherstate",
+    showPersons: "false"
+  }
+
+  nameChangedHandler = (event, id) => {
+
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id;
+    });
+
+    const person = {
+      ...this.state.persons[personIndex]
    }
 
-   switchNameHandler = (newName) =>{
-     //console.log("called");
-     // dont mutate like this : this.state.persons[0].name ="gauri joshi";
-     this.setState({persons:[
-      {name : newName, age:21},
-      {name : "abc", age:25},
-      {name : "xyz", age:88}
+   person.name = event.target.value;
+   const persons = [...this.state.persons];
+   persons[personIndex] = person;
 
-     ]})
-   }
+    this.setState({
+      persons : persons
+    })
+  }
 
-   nameChangedHandler = (event) => {
-    this.setState({persons:[
-      {name : "gauri", age:21},
-      {name : event.target.value, age:25},
-      {name : "xyz", age:88}
+  deletePersonHandler = (personIndex) => {
+    //const persons = this.state.persons.slice();
+    const persons = [...this.state.persons]
+    persons.splice(personIndex, 1);
+    this.setState({ persons: persons })
+  }
 
-     ]})
-
-   }
+  togglePersonHandler = () => {
+    const doesShow = this.state.showPersons;
+    this.setState({ showPersons: !doesShow });
+  }
 
   render() {
-      const style = {
-        backgroundColor :"white",
-        font : "inherit" ,
-        border : "1px solid blue",
-        padding : "8px",
-        cursor :"pointer"
-     }; 
-     
-       return (
-       <div className="App">
-         <h1> I am a react app!</h1>
-         <p>a paragraph</p>
-         <button 
-         style ={style}
-         onClick={() => this.switchNameHandler("gauri joshi!!")}>Switch name</button>
-         <Person 
-         name ={this.state.persons[0].name} 
-         age ={this.state.persons[0].age} />
-         <Person 
-         name ={this.state.persons[1].name} 
-         age ={this.state.persons[1].age}
-         click ={this.switchNameHandler.bind(this,"gauri!")}
-         changed= {this.nameChangedHandler}>Hobbies : racing</Person>
-         <Person 
-         name ={this.state.persons[2].name} 
-         age ={this.state.persons[2].age}/>
-       </div>
-       
-     );
-  // return React.createElement('div',{className:'App'},React.createElement('h1',null,'statement2'));
+    const style = {
+      backgroundColor: "white",
+      font: "inherit",
+      border: "1px solid blue",
+      padding: "8px",
+      cursor: "pointer"
+    };
+
+    let person = null;
+
+    if (this.state.showPersons === true) {
+      person = (
+        <div>
+          {this.state.persons.map((person, index) => {
+            return <Person
+              click={() => this.deletePersonHandler(index)}
+              name = {person.name}
+              age = {person.age}
+              key = {person.id}
+              changed = {(event) => this.nameChangedHandler(event, person.id)} />
+          })}
+        </div>
+      )
+    }
+
+    return (
+      <div className="App">
+        <h1> I am a react app!</h1>
+        <p>a paragraph</p>
+        <button
+          style={style}
+          onClick={this.togglePersonHandler}>Toggle Persons</button>
+        {person}
+      </div>
+
+    );
+    // return React.createElement('div',{className:'App'},React.createElement('h1',null,'statement2'));
   }
 }
 
