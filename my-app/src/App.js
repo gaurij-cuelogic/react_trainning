@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import './App.css';
+import classes from './App.css';
 import Person from './Person/Person.js';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary.js'
 
 class App extends Component {
   state = {
@@ -45,50 +46,44 @@ class App extends Component {
   }
 
   render() {
-    const style = {
-      backgroundColor: "green",
-      color :"white",
-      font: "inherit",
-      border: "1px solid blue",
-      padding: "8px",
-      cursor: "pointer"
-        };
-
+   
     let person = null;
+    let btnClass = ""; 
 
     if (this.state.showPersons === true) {
       person = (
         <div>
           {this.state.persons.map((person, index) => {
-            return <Person
+            return <ErrorBoundary key = {person.id}> 
+              <Person
               click={() => this.deletePersonHandler(index)}
               name = {person.name}
               age = {person.age}
-              key = {person.id}
               changed = {(event) => this.nameChangedHandler(event, person.id)} />
+              </ErrorBoundary>
           })}
         </div>
       );
-      style.backgroundColor = "red";
-     
+
+      btnClass = classes.red;
     }
 
-    const classes= [];
+    const AssignedClasses= [];
     if(this.state.persons.length <=2)
     {
-      classes.push('red');
+      AssignedClasses.push(classes.red);
     }
     if(this.state.persons.length<=1)
     {
-       classes.push('bold');
+      AssignedClasses.push(classes.bold);
     }
     return (
      
-      <div className="App">
+      <div className={classes.App}>
         <h1> I am a react app!</h1>
-        <p className = {classes.join(" ")}>a paragraph</p>
+        <p className = {AssignedClasses.join(" ")}>a paragraph</p>
         <button
-          style={style}
+        className = {btnClass}
           onClick={this.togglePersonHandler}>Toggle Persons</button>
         {person}
       </div>
