@@ -40,7 +40,7 @@ deleteCharHandler = (charIndex) => {
   let stringElement = characterArray.join("");
   
   this.setState({
-  letters : stringElement
+  letters : stringElement,
   })
  }
  
