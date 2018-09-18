@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, BrowserRouter, Switch , NavLink, Redirect} from 'react-router-dom';
+import { Route, BrowserRouter, Switch , Link,NavLink, Redirect} from 'react-router-dom';
 import Courses from './containers/Courses/Courses';
 import Course from './containers/Course/Course';
 import Users from './containers/Users/Users';
@@ -13,7 +13,7 @@ class App extends Component {
       <nav>
         <ul style ={{listStyle : "none" }}>
           <li>
-          <NavLink to ="/courses">Courses</NavLink>
+          <Link to ="/courses">Courses</Link>
           </li>
           <li>
           <NavLink to ="/users">Users</NavLink>
@@ -35,3 +35,4 @@ class App extends Component {
 }
 
 export default App;
+

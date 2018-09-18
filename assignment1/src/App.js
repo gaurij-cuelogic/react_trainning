@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
 import './App.css';
-import UserInput from './UserInput/UserInput.js';
+import UserInput from './UserInput/UserInput';
 import UserOutput from './UserOutput/UserOutput.js';
 
 class App extends Component {
   state = {
-   UserOutput : [
+   UserOutputName : [
       {userName : "gauri"},
       {userName : "pallavi"},
       {userName : "abc"}
+    ],
+    UserOutputAge : [
+      {userAge : 20},
+      {userAge : 21},
+      {userAge : 22}
     ]
 
   };
 
-  changeInputHandler = (event) =>
+  changeInputHandlerName = (event) =>
   {
        this.setState ({
-         UserOutput : [
+         UserOutputName : [
            {userName : event.target.value},
            {userName : event.target.value},
            {userName : event.target.value}
@@ -24,22 +29,34 @@ class App extends Component {
   })
 }
 
+changeInputHandlerAge = (event) =>
+  {
+       this.setState ({
+         UserOutputAge : [
+           {userAge : event.target.value},
+           {userAge : event.target.value},
+           {userAge : event.target.value}
+          ]
+  })
+}
+
 
   render() {
-    
-    return (
+       return (
       <div className="App">
        <h1>React assignmnet 1</h1>
-        <UserInput   
-        change = {this.changeInputHandler} />
-        <UserOutput 
-        name = {this.state.UserOutput[0].userName} 
-        age ="28" 
-        />
-        <UserOutput name = {this.state.UserOutput[1].userName} 
-        age ="20" />
-        <UserOutput name = {this.state.UserOutput[2].userName}
-         age ="38" />
+
+         <UserInput   
+        changeInputHandlerName = {this.changeInputHandlerName}
+        changeInputHandlerAge = {this.changeInputHandlerAge}        />
+            
+       
+       
+           <UserOutput
+         UserOutputName = {this.state.UserOutputName}
+         UserOutputAge = {this.state.UserOutputAge}/>
+         
+
       </div>
     );
   }

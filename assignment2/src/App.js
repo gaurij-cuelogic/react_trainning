@@ -7,12 +7,12 @@ class App extends Component {
 
   state = {
     letters: "",
-    length: "0",
+    length: 0,
     }
 
   textChangeHandler = (event) => {
     
-    let newlength = event.target.value.length;
+    const newlength = event.target.value.length;
     this.setState({
       length: newlength,
       letters : event.target.value
@@ -43,27 +43,29 @@ deleteCharHandler = (charIndex) => {
   letters : stringElement,
   })
  }
+
+ userString = (element) =>{
+  <div>
+    {element.map((seperatedString,index) => {
+      return <CharComponent
+    letters = {seperatedString}
+      key = {index}
+      click={() => this.deleteCharHandler(index)}
+      oneLetter = {seperatedString}
+    />
+    })}
+  </div>}
+ 
+
  
  // 
 render() {
-    let userString = null;
-    let element =this.state.letters.split("");
+  let userString = null;
+  let element =this.state.letters.split("");
+  
 
-
-    // console.log(typeof(seperatedString));
     if (this.state.length > 0) {
-    userString = (
-        <div>
-          {element.map((seperatedString,index) => {
-            return <CharComponent
-          letters = {seperatedString}
-            key = {index}
-            click={() => this.deleteCharHandler(index)}
-            oneLetter = {seperatedString}
-          />
-          })}
-        </div>
-      )
+ let component =  this.userString(element)
     }
 
     return (
@@ -71,7 +73,6 @@ render() {
         <input type="text" value = {this.state.letters} onChange={this.textChangeHandler} />
         <p> length of string : {this.state.length} </p>
         <ValidationComponent length={this.state.length} />
-        {userString}
       </div>
     );
   }

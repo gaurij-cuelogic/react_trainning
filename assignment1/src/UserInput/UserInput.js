@@ -8,9 +8,21 @@ const style = {
   };
 
 const UserInput = (props) => {
+
+let j = [];
+
+    for(let x= 0; x<1;x++){
+        let i= (<div>       
+         <input type ="text" style = {style} onChange = {props.changeInputHandlerName} />
+        <input type ="text" style = {style} onChange = {props.changeInputHandlerAge} />
+        </div>)
+       j.push(i)
+
+    }
+
     return (
         <div className ="App">
-            <input type ="text" style = {style} onChange = {props.change} value ={props.name} />
+           {j}
         </div>
     )
 };
