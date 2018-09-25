@@ -46,6 +46,7 @@ class BurgerBuilder extends Component {
     
 
     render() {
+        console.log(this.props.token)
         const disabledInfo = {
             ...this.props.ings
         };
@@ -95,7 +96,8 @@ const mapStateToProps = state => {
     return {
    ings : state.burgerBuilder.ingredients,
    price : state.burgerBuilder.totalPrice,
-   error: state.burgerBuilder.error
+   error: state.burgerBuilder.error,
+//    token : state.auth.token
   };
 }
 
