@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Layout from './hoc/Layout/Layout';
-import BurgerBuilder from './container/BurgerBuilder/BurgerBuilder'
+import BurgerBuilder from './container/BurgerBuilder/BurgerBuilder';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import Logout from './container/Auth/Logout/Logout';
 import { connect } from 'react-redux';
