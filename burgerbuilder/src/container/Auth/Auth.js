@@ -60,6 +60,7 @@ class Auth extends Component {
             }) 
         });
         this.setState({ controls: updatedControls });
+        
     }
 
     submitHandler = (event) => {
