@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import Spinner from '../../component/UI/Spinner/Spinner';
 import { Redirect } from 'react-router-dom';
 import {updateObject,checkValidity} from '../../shared/utility';
+import passwordValidator from 'password-validator';
+
 
 class Auth extends Component {
     state = {
@@ -32,15 +34,18 @@ class Auth extends Component {
                     placeholder: 'Password'
                 },
                 value: '',
-                validation: {
-                    required: true,
-                    minLength: 6
-                },
+                // validation: {
+                //     required: true,
+                //     minLength: 6,
+                //     maxLength: 10
+                // },
+                
                 valid: false,
                 touched: false
             }
         },
-        isSignup: true
+         isSignup: true,
+        errorMessage: null
     }
 
     componentDidMount() {
@@ -64,11 +69,36 @@ class Auth extends Component {
     }
 
     submitHandler = (event) => {
+        const schema = new passwordValidator();
+        schema
+        .is().min(8)                              // Minimum length 8
+        .is().max(100)                                  // Maximum length 100
+        .has().uppercase()                              // Must have uppercase letters
+        .has().lowercase()                              // Must have lowercase letters
+        .has().digits()                                 // Must have digits
+        .has().not().spaces()                           // Should not have spaces
+        
         event.preventDefault();
+        if(schema.validate(this.state.controls.password.value))
         this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup);
+        else{
+
+            this.setState({
+                errorMessage : <p> Password should be of minimum 8 characters, should contain atleast 1 uppercase letter, 1 lowercase letter,a digit and should not have spaces</p>
+               } )
+        }
     }
 
     switchAuthModeHandler = () => {
+        // console.log(this.state.isSignup)
+ localStorage.setItem('isSignUp',this.state.isSignup);
+ console.log();
+ 
+
+        // let x = !this.state.isSignup;
+        // console.log(x);
+        // localStorage.setItem('token', x;
+
         this.setState(prevState => {
             return { isSignup: !prevState.isSignup };
         })
@@ -100,11 +130,11 @@ class Auth extends Component {
             form = <Spinner />
         }
 
-        let errorMessage = null;
+       
         if (this.props.error) {
-            errorMessage = (
-                <p>{this.props.error.message}</p>
-            );
+          this.setState({
+            errorMessage : `<p>${this.props.error.message}</p>`
+           } )
         }
 
         let authRedirect = null;
@@ -112,18 +142,28 @@ class Auth extends Component {
             authRedirect = <Redirect to={this.props.authRedirectPath} />
         }
 
+        let word = null;
+
+        if(localStorage.getItem('isSignUp') === 'true') {
+            word = 'SIGNIN'
+        } else {
+            word = 'SIGNUP'
+        }
+
+
+       
         return (
 
             <div className={classes.Auth}>
                 {authRedirect}
-                {errorMessage}
+                {this.state.errorMessage}
                 <form onSubmit={this.submitHandler}>
                     {form}
                     <Button btnType="Success">SUBMIT</Button>
                 </form>
                 <Button
                     clicked={this.switchAuthModeHandler}
-                    btnType="Danger">SWITCH TO {this.state.isSignup ? 'SIGNIN' : 'SIGNUP'}</Button>
+                    btnType="Danger">SWITCH TO {word}</Button>
             </div>
         );
     }

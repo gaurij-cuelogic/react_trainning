@@ -6,7 +6,8 @@ import Spinner from '../../../component/UI/Spinner/Spinner';
 import Input from '../../../component/UI/Input/Input';
 import { connect } from 'react-redux';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
-import * as actions from '../../../store/actions/index'
+import * as actions from '../../../store/actions/index';
+import moment from 'moment';
 import { updateObject, checkValidity } from '../../../shared/utility';
 
 class ContactData extends Component {
@@ -70,15 +71,14 @@ class ContactData extends Component {
             email: {
                 elementType: 'input',
                 elementConfig: {
-                    type: 'email',
-                    placeholder: 'Your EmailId'
+                    type: 'email'
                 },
-                value: '',
+                value: localStorage.getItem('email'),
                 validation: {
                     required: true
                 },
-                valid: false,
-                touched: false
+                valid: true,
+                touched: true
             },
             deliveryMethod: {
                 elementType: 'select',
@@ -102,11 +102,12 @@ class ContactData extends Component {
         for (let formElementIdentifier in this.state.orderForm) {
             formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
         }
+        formData.timeStamp = moment().unix()
         const order = {
             ingredients: this.props.ings,
             price: this.props.price,
             orderData: formData,
-            userId: this.props.userId
+            userId: localStorage.getItem('userId')
         }
       
         this.props.onOrderBurger(order,this.props.token);
@@ -120,7 +121,6 @@ class ContactData extends Component {
             valid : checkValidity(event.target.value, this.state.orderForm[inputIdentifier].validation),
             touched : true
         });
-        console.log(updatedFormElement.validation)
         const updatedOrderForm = updateObject(this.state.orderForm,{
             [inputIdentifier]:updatedFormElement,         
         });
@@ -153,7 +153,6 @@ class ContactData extends Component {
                         value={formElement.config.value}
                         invalid={!formElement.config.valid}
                         shouldValidate={formElement.config.validation}
-                        touched={formElement.config.touched}
                         changed={(event) => this.inputChangedHandler(event, formElement.id)} />
                 ))}
                 <Button btnType="Success" disabled={!this.state.formIsValid}> ORDER</Button>
@@ -179,7 +178,7 @@ const mapStateToProps = state => {
         price: state.burgerBuilder.totalPrice,
         loading: state.order.loading,
         token : state.auth.token,
-        userId : state.auth.userId
+        userId : state.userId
     }
 };
 

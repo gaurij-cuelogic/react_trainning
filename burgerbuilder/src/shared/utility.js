@@ -8,8 +8,6 @@ export const updateObject = (oldObject, updatedProperties) => {
 
 export const checkValidity = (value, rules) => {
 
-    console.log(value);
-    console.log(rules);
     let isValid = true;
 
     if (!rules) {
@@ -24,9 +22,11 @@ export const checkValidity = (value, rules) => {
         isValid = value.length >= rules.minLength && isValid;
     }
 
+
     if (rules.maxLength) {
         isValid = value.length <= rules.maxLength && isValid;
+        console.log('maxlength',isValid);
     }
-
+    console.log(isValid);
     return isValid;
 }

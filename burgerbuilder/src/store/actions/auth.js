@@ -28,6 +28,7 @@ export const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('expirationDate');
     localStorage.removeItem('userId');
+    localStorage.removeItem('email');
     return{
         type : actionTypes.AUTH_LOGOUT
     };
@@ -49,14 +50,15 @@ export const auth = (email, password, isSignUp) => {
             password: password,
             returnSecureToken : true
         };
-        let url ='https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyBU-ahmkGjSl9Ql5gQ_GS9oklmiVc3pYKY';
+        let url ='https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyAA3nHCBtsijYUMbbxgT06pKi2Ltj2wIjc';
         if(!isSignUp){
-            url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyBU-ahmkGjSl9Ql5gQ_GS9oklmiVc3pYKY';
+            url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyAA3nHCBtsijYUMbbxgT06pKi2Ltj2wIjc';
         }
         axios.post(url,authData)
         .then(response => {
             const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
             localStorage.setItem('token', response.data.idToken);
+            localStorage.setItem('email', authData.email);
             localStorage.setItem('expirationDate',expirationDate);
             localStorage.setItem('userId',response.data.localId);
             dispatch(authSuccess(response.data.idToken,response.data.localId));

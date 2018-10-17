@@ -23,10 +23,13 @@ class Orders extends Component {
                         ingredients={order.ingredients}
                         price={order.price} />
                 ))
+
+
         }
+    
         return (
             <div>
-                {orders}
+        {orders}
             </div>
         );
     }
