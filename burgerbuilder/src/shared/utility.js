@@ -25,8 +25,6 @@ export const checkValidity = (value, rules) => {
 
     if (rules.maxLength) {
         isValid = value.length <= rules.maxLength && isValid;
-        console.log('maxlength',isValid);
     }
-    console.log(isValid);
     return isValid;
 }

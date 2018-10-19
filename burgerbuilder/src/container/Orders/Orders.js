@@ -5,6 +5,7 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
 import * as actions from '../../store/actions/index';
 import { connect } from 'react-redux';
 import Spinner from '../../component/UI/Spinner/Spinner';
+import OrderNull from '../../component/Order/noOrder';
 
 class Orders extends Component {
 
@@ -14,6 +15,7 @@ class Orders extends Component {
     }
 
     render() {
+
         let orders = <Spinner />
         if (!this.props.loading) {
             orders =
@@ -23,13 +25,15 @@ class Orders extends Component {
                         ingredients={order.ingredients}
                         price={order.price} />
                 ))
-
-
+                //
+            if (orders.length === 0) {
+                console.log('spinner of 0 length')
+              orders= <OrderNull/>
+            }
         }
-    
         return (
             <div>
-        {orders}
+                {orders}
             </div>
         );
     }
@@ -39,8 +43,8 @@ const mapStateToProps = state => {
     return {
         orders: state.order.orders,
         loading: state.order.loading,
-        token : state.auth.token,
-        userId:state.auth.userId
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 
