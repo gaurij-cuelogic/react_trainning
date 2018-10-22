@@ -7,16 +7,16 @@ import { connect } from 'react-redux';
 import * as actions from './store/actions/index';
 import asyncComponent from './hoc/asyncComponent/asyncComponent';
 
-const asyncCheckout = asyncComponent(()=> {
-  return import ('./container/Checkout/Checkout');
+const asyncCheckout = asyncComponent(() => {
+  return import('./container/Checkout/Checkout');
 });
 
-const asyncOrders = asyncComponent(()=> {
-  return import ('./container/Orders/Orders');
+const asyncOrders = asyncComponent(() => {
+  return import('./container/Orders/Orders');
 });
 
-const asyncAuth = asyncComponent(()=> {
-  return import ('./container/Auth/Auth');
+const asyncAuth = asyncComponent(() => {
+  return import('./container/Auth/Auth');
 });
 
 
@@ -29,7 +29,6 @@ class App extends Component {
       <Switch>
         <Route path="/auth" component={asyncAuth} />
         <Route path="/" exact component={BurgerBuilder} />
-        <Redirect to="/" />
       </Switch>
     );
 
