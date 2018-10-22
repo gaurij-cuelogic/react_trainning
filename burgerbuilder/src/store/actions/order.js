@@ -1,5 +1,6 @@
 import * as actionTypes from './actionsTypes';
 import axios from '../../axios-orders';
+import _ from 'lodash';
 
 export const purchaseBurgerSuccess = (id, orderData) => {
     return {
@@ -63,26 +64,21 @@ export const fetchOrdersStart = () => {
 };
 
 export const fetchOrders = (token, userId) => {
-    // console.log(typeof(userId));
     return dispatch => {
         dispatch(fetchOrdersStart());
-      const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
-        //const queryParams = `?auth=${token}&orderBy="userId"&equalTo="${userId}"`;
-        // let uri = '/orders.json' + queryParams;
-        // console.log('uri====>',uri);
-        console.log(queryParams);
+        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
         axios.get('/orders.json' + queryParams)
             .then(res => {
-            //    console.log(res);
-                const fetchedOrders = [];
+                let fetchedOrders = [];
                 for (let key in res.data) {
                     fetchedOrders.push({
                         ...res.data[key],
                         id: key
                     });
-                }
-                console.log(res.data);
-                dispatch(fetchOrdersSuccess(fetchedOrders.sort().reverse()));
+                }     
+
+                fetchedOrders = _.orderBy(fetchedOrders,['orderData.timeStamp'],['desc']);
+                dispatch(fetchOrdersSuccess(fetchedOrders));
             })
             .catch(err => {
                 dispatch(fetchOrdersFail(err));
