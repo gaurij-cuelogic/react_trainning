@@ -69,9 +69,9 @@ class Auth extends Component {
 
         event.preventDefault();
         this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup);
-       this.setState({
-           passwordChecker:true
-       })
+        this.setState({
+            passwordChecker:true
+        })
         // let errorMessage = null;
 
         // const schema = new passwordValidator();
@@ -143,6 +143,7 @@ class Auth extends Component {
         if (this.state.isSignup && this.state.passwordChecker ) {
             if (!schema.validate(this.state.controls.password.value)) {
                 errorMessage = <p> Password should be of minimum 8 characters, should contain atleast 1 uppercase letter, 1 lowercase letter,a digit and should not have spaces</p>
+                authRedirect = <Redirect to="/auth" />
             }
         }
       
@@ -168,16 +169,6 @@ class Auth extends Component {
         if (this.props.isAuthenticated) {
             authRedirect = <Redirect to={this.props.authRedirectPath} />
         }
-
-        // let word = null;
-
-        // if (localStorage.getItem('isSignUp') === 'true') {
-        //     word = 'SIGNUP'
-        // } else {
-        //     word = 'SIGNIN'
-        // }
-
-
 
         return (
 
